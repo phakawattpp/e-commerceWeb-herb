@@ -2,15 +2,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
 @import 'react-slideshow-image/dist/styles.css';
 @import url('https://fonts.googleapis.com/css2?family=Pattaya&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Athiti:wght@400;500;700&display=swap');
 body {
   margin: 0;
-  font-family: 'Pattaya';
+  font-family: 'Athiti';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  font-family: 'Pattaya';
+  font-family: 'Athiti';
 }
 
 a:visited {

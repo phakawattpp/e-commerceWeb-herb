@@ -8,13 +8,12 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 import Logo from '../icon/Logo.svg';
-
 import Badge from '@mui/material/Badge';
 import Bag from '../icon/bag.svg';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-
+import AllProducts from './AllProducts';
 const CustomButton = styled(Button)(({ theme }) => ({
   width: '120px',
   height: '48px',
@@ -76,7 +75,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Navbar() {
+export default function Navbar({ cartItems }) {
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='sticky' sx={{ background: 'white' }}>
@@ -109,11 +108,13 @@ export default function Navbar() {
                 inputProps={{ 'aria-label': 'search' }}
               />
             </Search>
-            <IconButton aria-label='cart' sx={{ margin: '16px 16px' }}>
-              <Badge badgeContent={4} color={'error'}>
-                <img src={Bag} alt='bag' />
-              </Badge>
-            </IconButton>
+            <Link to='/cart'>
+              <IconButton aria-label='cart' sx={{ margin: '16px 16px' }}>
+                <Badge badgeContent={cartItems.length} color={'error'}>
+                  <img src={Bag} alt='bag' />
+                </Badge>
+              </IconButton>
+            </Link>
             <Divider orientation='vertical' flexItem />
             <CustomButton
               variant='text'

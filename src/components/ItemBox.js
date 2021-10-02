@@ -8,6 +8,10 @@ import Img2 from '../icon/Item2.svg';
 import Img3 from '../icon/Item3.svg';
 import noImg from '../icon/noImg.jpg';
 import Link from '@mui/material/Link';
+import IconButton from '@mui/material/IconButton';
+import AddShoppingCartRoundedIcon from '@mui/icons-material/AddShoppingCartRounded';
+import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
+import React from 'react';
 const Img = styled('img')({
   margin: 'auto',
   display: 'block',
@@ -15,7 +19,18 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function ItemBox({ productType }) {
+export default function ItemBox({
+  toggle,
+  productType,
+  product,
+  addItem,
+  cartItems,
+  totalPrice,
+  setTotalPrice,
+}) {
+  const [toggleAdd, setToggleAdd] = React.useState(false);
+
+  let newCart = [...cartItems];
   return (
     <Paper
       sx={{
@@ -53,18 +68,45 @@ export default function ItemBox({ productType }) {
           <Grid item xs container direction='column' spacing={2}>
             <Grid item xs>
               <Typography gutterBottom variant='subtitle1' component='div'>
-                Sweet Herb
+                {product.productName}
               </Typography>
               <Typography variant='body2' gutterBottom>
-                Best item for you.
+                {product.productDetail}
               </Typography>
               <Link>View</Link>
             </Grid>
           </Grid>
-          <Grid item>
+          <Grid
+            item
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexDirection: 'column',
+            }}
+          >
             <Typography color='red' variant='subtitle1' component='div'>
-              9,999 B/KG
+              {product.productPrice} B/KG
             </Typography>
+            {/* {console.log(toggle)} */}
+            {!toggleAdd ? (
+              <IconButton
+                onClick={() => {
+                  addItem([...newCart, product]);
+                  setToggleAdd(true);
+                  // setTotalPrice(totalPrice + product.productPrice);
+                  {
+                    console.log(totalPrice);
+                  }
+                }}
+              >
+                <AddShoppingCartRoundedIcon color={'success'} />
+              </IconButton>
+            ) : (
+              <IconButton>
+                <CheckCircleRoundedIcon color={'success'} />
+              </IconButton>
+            )}
           </Grid>
         </Grid>
       </Grid>

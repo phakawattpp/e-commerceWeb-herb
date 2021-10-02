@@ -19,13 +19,15 @@ const CustomButton = styled(Button)(({ theme }) => ({
   },
   position: 'relative',
 }));
-export default function Home() {
+export default function Home({ cart, setCart, totalPrice, setTotalPrice }) {
   const [tabs, setTabs] = React.useState('All');
 
   return (
     <>
+      {/* {console.log(cart)}
+      {console.log(setCart)} */}
       {/* <ImgSlider /> */}
-      <div style={{ display: 'flex', justifyContent: 'center' }}>
+      {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Paper
           elevation={0}
           sx={{
@@ -74,7 +76,7 @@ export default function Home() {
             </CustomButton>
           </Grid>
         </Paper>
-      </div>
+      </div> */}
 
       {/* Our products Section */}
 
@@ -94,7 +96,7 @@ export default function Home() {
           <Typography variant='h2' sx={{ textAlign: 'center' }}>
             Our Products
           </Typography>
-          <Grid
+          {/* <Grid
             container
             sx={{
               display: 'flex',
@@ -111,8 +113,14 @@ export default function Home() {
               -{' '}
             </Divider>
             <Categories setTabs={setTabs} />
-          </Grid>
-          <AllProducts type={tabs} />
+          </Grid> */}
+          <AllProducts
+            type={tabs}
+            cart={cart}
+            setCart={setCart}
+            totalPrice={totalPrice}
+            setTotalPrice={setTotalPrice}
+          />
         </Paper>
       </div>
     </>
