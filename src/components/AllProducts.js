@@ -87,13 +87,6 @@ export default function AllProducts({
           &nbsp;* {type} *
         </Typography>
       </Box>
-      {/* {AllProductsItems.map((el) => {
-        console.log('id =', el.productID());
-        console.log('name =', el.productName);
-        console.log('price =', el.productPrice);
-        console.log('detail =', el.productDetail);
-      })} */}
-      {/* {console.log('asdsa', cart)} */}
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         {AllProductsItems.map((el, index) => {
           return (

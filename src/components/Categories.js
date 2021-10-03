@@ -35,7 +35,6 @@ export default function Categories({ setTabs }) {
         <Tab label='Tasty' value={'Tasty'} />
         <Tab label='Smell' value={'Smell'} />
       </Tabs>
-      {/* {console.log('asdas', value)} */}
     </Box>
   );
 }

@@ -31,6 +31,11 @@ export default function ItemBox({
   const [toggleAdd, setToggleAdd] = React.useState(false);
 
   let newCart = [...cartItems];
+  let element = newCart.findIndex(
+    (element) => element.productID === product.productID
+  );
+
+  // console.log(element);
   return (
     <Paper
       sx={{
@@ -88,16 +93,14 @@ export default function ItemBox({
             <Typography color='red' variant='subtitle1' component='div'>
               {product.productPrice} B/KG
             </Typography>
-            {/* {console.log(toggle)} */}
-            {!toggleAdd ? (
+
+            {!toggleAdd && element === -1 ? (
               <IconButton
                 onClick={() => {
+                  let date = new Date();
+                  product.productIDx = date.getMilliseconds();
                   addItem([...newCart, product]);
                   setToggleAdd(true);
-                  // setTotalPrice(totalPrice + product.productPrice);
-                  {
-                    console.log(totalPrice);
-                  }
                 }}
               >
                 <AddShoppingCartRoundedIcon color={'success'} />

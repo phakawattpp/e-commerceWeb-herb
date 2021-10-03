@@ -23,7 +23,7 @@ function App() {
       total += el.productPrice * el.quantity;
     });
     setTotalPrice(total);
-    console.log(totalPrice);
+    // console.log(totalPrice);
   }, [cart]);
 
   return (
@@ -39,7 +39,6 @@ function App() {
                 totalPrice={totalPrice}
                 setTotalPrice={setTotalPrice}
               />
-              {/* {console.log(cart)} */}
             </Route>
             {/* <Route path='/about'>
               <About />

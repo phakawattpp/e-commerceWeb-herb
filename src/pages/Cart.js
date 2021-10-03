@@ -50,13 +50,14 @@ export default function Cart({
   setTotalPrice,
 }) {
   const classes = useStyles();
-  const [total, setTotal] = React.useState(0);
+  const [id, setID] = React.useState(0);
+
   return (
     <>
-      {/* {console.log(cartItems[0].productImg)} */}
       <Paper
         sx={{ display: 'flex', justifyContent: 'center', boxShadow: 'none' }}
       >
+        {/* {console.log('cart', cartItems)} */}
         <Grid
           container
           spacing={2}
@@ -74,10 +75,9 @@ export default function Cart({
             margin: '48px',
           }}
         >
-          {console.log('test', cartItems.length)}
           {cartItems.length !== 0 ? (
             cartItems.map((element, index) => (
-              <CustomCard>
+              <CustomCard key={index}>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                   <img src={element.productImg} width='90' height='90' />
                   <Box
@@ -88,8 +88,10 @@ export default function Cart({
                     }}
                   >
                     <Typography variant='body1'>
-                      {element.productID + 1}
+                      {element.productIDx}
                     </Typography>
+
+                    {/* <Typography variant='body1'>{id}</Typography> */}
                     <Typography variant='h5'>{element.productName}</Typography>
                     <Typography variant='body1'>
                       {element.productDetail}
@@ -108,28 +110,15 @@ export default function Cart({
                     variant='standard'
                     onChange={(e) => {
                       let newCart = [...cartItems];
-                      newCart[element.productID] = {
-                        ...newCart[element.productID],
+                      const elementsIndex = newCart.findIndex(
+                        (element2) => element2.productID == element.productID
+                      );
+                      newCart[elementsIndex] = {
+                        ...newCart[elementsIndex],
                         quantity: e.target.value,
                       };
                       setCart(newCart);
-                      if (
-                        totalPrice >
-                        totalPrice + newCart[element.productID].productPrice
-                      ) {
-                        setTotalPrice(
-                          totalPrice - newCart[element.productID].productPrice
-                        );
-                      } else if (
-                        totalPrice >
-                        totalPrice - newCart[element.productID].productPrice
-                      ) {
-                        setTotalPrice(
-                          totalPrice + newCart[element.productID].productPrice
-                        );
-                      }
                     }}
-                    //   value={element.quantity}
                     InputProps={{ inputProps: { min: 1, max: 10 } }}
                   />
                   <TextField
@@ -146,9 +135,6 @@ export default function Cart({
                       },
                     }}
                     disabled
-                    // onChange={() => {
-                    //   setTotal(element.productPrice * element.quantity);
-                    // }}
                     value={element.productPrice * element.quantity}
                   />
                   <IconButton
@@ -159,7 +145,6 @@ export default function Cart({
                       let newCart = exCart.filter(
                         (cart) => cart.productID !== element.productID
                       );
-                      console.log(newCart);
                       setCart(newCart);
                     }}
                   >
@@ -170,7 +155,6 @@ export default function Cart({
             ))
           ) : (
             <CustomCard>
-              {/* {console.log('asdasd')} */}
               <Typography variant='h2'>No items in cart now.</Typography>
             </CustomCard>
           )}
@@ -202,7 +186,6 @@ export default function Cart({
             <Typography variant='h2' sx={{ textAlign: 'center' }}>
               Bill Summary
             </Typography>
-            {console.log(total)}
             <Typography variant='h5'>Total Price : {totalPrice}</Typography>
             <CustomButton
               onClick={() => {

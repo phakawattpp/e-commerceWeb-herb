@@ -24,8 +24,6 @@ export default function Home({ cart, setCart, totalPrice, setTotalPrice }) {
 
   return (
     <>
-      {/* {console.log(cart)}
-      {console.log(setCart)} */}
       {/* <ImgSlider /> */}
       {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Paper
