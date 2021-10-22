@@ -12,6 +12,7 @@ import IconButton from '@mui/material/IconButton';
 import AddShoppingCartRoundedIcon from '@mui/icons-material/AddShoppingCartRounded';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import React from 'react';
+import { CartContext } from '../App';
 const Img = styled('img')({
   margin: 'auto',
   display: 'block',
@@ -19,22 +20,9 @@ const Img = styled('img')({
   maxHeight: '100%',
 });
 
-export default function ItemBox({
-  toggle,
-  productType,
-  product,
-  addItem,
-  cartItems,
-  totalPrice,
-  setTotalPrice,
-}) {
+export default function ItemBox({ product, productType }) {
   const [toggleAdd, setToggleAdd] = React.useState(false);
-
-  let newCart = [...cartItems];
-  let element = newCart.findIndex(
-    (element) => element.productID === product.productID
-  );
-
+  const { state, dispatch } = React.useContext(CartContext);
   // console.log(element);
   return (
     <Paper
@@ -93,21 +81,17 @@ export default function ItemBox({
             <Typography color='red' variant='subtitle1' component='div'>
               {product.productPrice} B/KG
             </Typography>
-
-            {!toggleAdd && element === -1 ? (
+            {state.some((obj) => obj.productID === product.productID) ? (
+              <IconButton>
+                <CheckCircleRoundedIcon color={'success'} />
+              </IconButton>
+            ) : (
               <IconButton
                 onClick={() => {
-                  let date = new Date();
-                  product.productIDx = date.getMilliseconds();
-                  addItem([...newCart, product]);
-                  setToggleAdd(true);
+                  dispatch({ type: 'ADD_ITEM', payload: product });
                 }}
               >
                 <AddShoppingCartRoundedIcon color={'success'} />
-              </IconButton>
-            ) : (
-              <IconButton>
-                <CheckCircleRoundedIcon color={'success'} />
               </IconButton>
             )}
           </Grid>

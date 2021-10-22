@@ -1,60 +1,78 @@
 import './App.css';
+import './styles.css';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  BrowserRouter,
+} from 'react-router-dom';
 import Home from './pages/Home';
 import About from './pages/About';
 import Cart from './pages/Cart';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import React from 'react';
+import { reducer, initialState } from './reducers/cartReducers';
+import Checkout from './pages/Checkout';
+
 const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#127236',
+    },
+  },
   typography: {
-    fontFamily: 'Athiti',
+    fontFamily: "'Athiti',sans-serif",
   },
 });
 
-function App() {
-  const [cart, setCart] = React.useState([]);
-  const [totalPrice, setTotalPrice] = React.useState(0);
+export const CartContext = React.createContext();
 
+const Routing = () => {
+  const { state, dispatch } = React.useContext(CartContext);
+  const [totalPrice, setTotal] = React.useState(0);
   React.useEffect(() => {
-    let total = 0;
-    cart.map((el, index) => {
-      total += el.productPrice * el.quantity;
-    });
-    setTotalPrice(total);
-    // console.log(totalPrice);
-  }, [cart]);
+    console.log('Cart', state);
+    setTotal(
+      state.reduce(
+        (n, { productPrice, quantity }) => n + productPrice * quantity,
+        0
+      )
+    );
+  }, [state]);
+  return (
+    <Switch>
+      <Route exact path='/'>
+        <Home />
+      </Route>
+      {/* <Route path='/about'>
+  <About />
+</Route> */}
+      <Route path='/cart'>
+        <Cart summary={totalPrice} />
+      </Route>
+      <Route path='/checkout'>
+        <Checkout summary={totalPrice} />
+      </Route>
+    </Switch>
+  );
+};
+
+function App() {
+  const [state, dispatch] = React.useReducer(reducer, initialState);
 
   return (
     <>
-      <Router>
+      <CartContext.Provider value={{ state, dispatch }}>
         <ThemeProvider theme={theme}>
-          <Navbar cartItems={cart} />
-          <Switch>
-            <Route exact path='/'>
-              <Home
-                cart={cart}
-                setCart={setCart}
-                totalPrice={totalPrice}
-                setTotalPrice={setTotalPrice}
-              />
-            </Route>
-            {/* <Route path='/about'>
-              <About />
-            </Route> */}
-            <Route path='/cart'>
-              <Cart
-                cartItems={cart}
-                setCart={setCart}
-                totalPrice={totalPrice}
-                setTotalPrice={setTotalPrice}
-              />
-            </Route>
-          </Switch>
-          {/* <Footer /> */}
+          <Router>
+            <Navbar />
+            <Routing />
+            <Footer />
+          </Router>
         </ThemeProvider>
-      </Router>
+      </CartContext.Provider>
     </>
   );
 }

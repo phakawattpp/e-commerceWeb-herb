@@ -7,6 +7,10 @@ import { styled } from '@mui/material/styles';
 import Categories from '../components/Categories';
 import Divider from '@mui/material/Divider';
 import AllProducts from '../components/AllProducts';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import { Link } from 'react-router-dom';
+import { CartContext } from '../App';
+
 const CustomButton = styled(Button)(({ theme }) => ({
   width: '120px',
   height: '48px',
@@ -21,9 +25,35 @@ const CustomButton = styled(Button)(({ theme }) => ({
 }));
 export default function Home({ cart, setCart, totalPrice, setTotalPrice }) {
   const [tabs, setTabs] = React.useState('All');
+  const { state, dispatch } = React.useContext(CartContext);
+
+  const item = [
+    {
+      productImg: 'aaaaa',
+      productID: 0,
+      productName: 'Item#1',
+      productDetail: 'Product Detail',
+      productPrice: 100,
+      quantity: 1,
+    },
+    {
+      productImg: 'asdasd',
+      productID: 1,
+      productName: 'Item#2',
+      productDetail: 'Product Detail',
+      productPrice: 200,
+      quantity: 1,
+    },
+  ];
 
   return (
     <>
+      <div className='breadcrumbHeader'>
+        <Breadcrumbs aria-label='breadcrumb' separator='->'>
+          <Typography>HOME</Typography>
+        </Breadcrumbs>
+      </div>
+
       {/* <ImgSlider /> */}
       {/* <div style={{ display: 'flex', justifyContent: 'center' }}>
         <Paper
@@ -75,6 +105,27 @@ export default function Home({ cart, setCart, totalPrice, setTotalPrice }) {
           </Grid>
         </Paper>
       </div> */}
+      {/* <CustomButton
+        onClick={() => {
+          dispatch({ type: 'ADD_ITEM', payload: item[0] });
+        }}
+      >
+        test
+      </CustomButton>
+      <CustomButton
+        onClick={() => {
+          dispatch({ type: 'ADD_ITEM', payload: item[1] });
+        }}
+      >
+        test
+      </CustomButton>
+      <CustomButton
+        onClick={() => {
+          dispatch({ type: 'REMOVE_ITEM', payload: item[0] });
+        }}
+      >
+        test
+      </CustomButton> */}
 
       {/* Our products Section */}
 
@@ -112,13 +163,7 @@ export default function Home({ cart, setCart, totalPrice, setTotalPrice }) {
             </Divider>
             <Categories setTabs={setTabs} />
           </Grid> */}
-          <AllProducts
-            type={tabs}
-            cart={cart}
-            setCart={setCart}
-            totalPrice={totalPrice}
-            setTotalPrice={setTotalPrice}
-          />
+          <AllProducts type={tabs} />
         </Paper>
       </div>
     </>

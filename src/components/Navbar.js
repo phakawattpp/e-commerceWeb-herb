@@ -14,6 +14,7 @@ import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import AllProducts from './AllProducts';
+import { CartContext } from '../App';
 const CustomButton = styled(Button)(({ theme }) => ({
   width: '120px',
   height: '48px',
@@ -75,7 +76,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function Navbar({ cartItems }) {
+export default function Navbar() {
+  const { state, dispatch } = React.useContext(CartContext);
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position='sticky' sx={{ background: 'white' }}>
@@ -110,7 +112,7 @@ export default function Navbar({ cartItems }) {
             </Search>
             <Link to='/cart'>
               <IconButton aria-label='cart' sx={{ margin: '16px 16px' }}>
-                <Badge badgeContent={cartItems.length} color={'error'}>
+                <Badge badgeContent={state.length} color={'error'}>
                   <img src={Bag} alt='bag' />
                 </Badge>
               </IconButton>
