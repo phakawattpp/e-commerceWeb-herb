@@ -14,6 +14,9 @@ import { CartContext } from '../App';
 import { Link } from 'react-router-dom';
 import '../styles.css';
 import { Breadcrumbs } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+
 const CustomCard = styled(Card)(({ theme }) => ({
   width: 'calc(100% - 64px)',
   height: '120px',
@@ -56,8 +59,46 @@ export default function Checkout({ summary }) {
   const [phone, setPhone] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [address, setAddress] = React.useState('');
+  const [zipcode, setZipcode] = React.useState('');
   const [verified, setVerified] = React.useState(false);
+  const [action, setAction] = React.useState(null);
+  const [loader, setLoader] = React.useState(null);
   const classes = useStyles();
+
+  const submit = async () => {
+    console.log(name, phone, email, address, zipcode, state, summary);
+    await fetch('/submitOrder', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name,
+        phone,
+        email,
+        address,
+        zipcode,
+        customer_order_products: state,
+        order_total_price: summary,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setAction(data.status);
+        setLoader(false);
+        setName('');
+        setPhone('');
+        setEmail('');
+        setAddress('');
+        setZipcode('');
+        console.log(data);
+      })
+      .catch((err) => {
+        setAction(err.status);
+        console.log(err);
+      });
+  };
+
   React.useEffect(() => {
     if (
       !/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(
@@ -78,7 +119,19 @@ export default function Checkout({ summary }) {
           <Typography>CHECKOUT</Typography>
         </Breadcrumbs>
       </div>
-
+      {action === 'SUCCESS' ? (
+        <Alert severity='success'>
+          <AlertTitle>Success</AlertTitle>
+          We have received your order and information —{' '}
+          <strong>THANK YOU!</strong>
+        </Alert>
+      ) : action === 'ERROR' ? (
+        <Alert severity='error'>
+          <AlertTitle>Error</AlertTitle>
+          Cannot process this order —{' '}
+          <strong>PLEASE CHECK YOUR ORDER AND INFORMATIONS</strong>
+        </Alert>
+      ) : null}
       <Paper
         sx={{
           display: 'flex',
@@ -109,7 +162,7 @@ export default function Checkout({ summary }) {
             state.map((element, index) => (
               <CustomCard key={index}>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                  <img src={element.productImg} width='90' height='90' />
+                  <img src={element.product_img} width='90' height='90' />
                   <Box
                     sx={{
                       display: 'flex',
@@ -118,13 +171,13 @@ export default function Checkout({ summary }) {
                     }}
                   >
                     <Typography variant='body1'>
-                      {element.productIDx}
+                      {element.product_id}
                     </Typography>
 
                     {/* <Typography variant='body1'>{id}</Typography> */}
-                    <Typography variant='h5'>{element.productName}</Typography>
+                    <Typography variant='h5'>{element.product_name}</Typography>
                     <Typography variant='body1'>
-                      {element.productDetail}
+                      {element.product_detail}
                     </Typography>
                   </Box>
                 </Box>
@@ -155,7 +208,7 @@ export default function Checkout({ summary }) {
                       },
                     }}
                     disabled
-                    value={element.productPrice * element.quantity}
+                    value={element.product_price * element.quantity}
                   />
                 </Box>
               </CustomCard>
@@ -240,6 +293,7 @@ export default function Checkout({ summary }) {
                   setEmail(e.target.value);
                 }}
               />
+
               {!verified && email ? (
                 <p style={{ color: 'red' }}>INVALID EMAIL FORMAT</p>
               ) : null}
@@ -253,14 +307,50 @@ export default function Checkout({ summary }) {
                   setAddress(e.target.value);
                 }}
               />
+              <TextField
+                id='outlined-basic'
+                label='ZIPCODE'
+                className='checkoutInput'
+                type='tel'
+                variant='outlined'
+                onChange={(e) => {
+                  setZipcode(e.target.value);
+                }}
+              />
             </div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <SuccessButton
-                disabled={verified && name && phone && address ? false : true}
-              >
-                GO
-              </SuccessButton>
+              {verified &&
+              name &&
+              phone &&
+              address &&
+              zipcode &&
+              state !== [] &&
+              action === null ? (
+                <SuccessButton
+                  id='submitOrder'
+                  // disabled={
+                  //   verified &&
+                  //   name &&
+                  //   phone &&
+                  //   address &&
+                  //   zipcode &&
+                  //   state !== []
+                  //     ? false
+                  //     : true
+                  // }
+                  onClick={() => {
+                    setLoader(true);
+                    submit('/submitOrder');
+                  }}
+                >
+                  GO
+                </SuccessButton>
+              ) : action !== null ? null : (
+                <Typography color={'red'}>CHECK YOUR INFORMATIONS</Typography>
+              )}
             </div>
+
+            {loader ? <div className='loader' /> : null}
           </Box>
         </Grid>
       </Paper>

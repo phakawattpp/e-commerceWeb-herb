@@ -43,28 +43,17 @@ export default function ItemBox({ product, productType }) {
               height: 128,
             }}
           >
-            <Img
-              alt='complex'
-              src={
-                productType === 'All'
-                  ? Img1
-                  : productType === 'Deal'
-                  ? Img2
-                  : productType === 'Healthy'
-                  ? Img3
-                  : noImg
-              }
-            />
+            <Img alt='complex' src={product.product_img} />
           </ButtonBase>
         </Grid>
         <Grid item xs={12} sm container>
           <Grid item xs container direction='column' spacing={2}>
             <Grid item xs>
               <Typography gutterBottom variant='subtitle1' component='div'>
-                {product.productName}
+                {product.product_name}
               </Typography>
               <Typography variant='body2' gutterBottom>
-                {product.productDetail}
+                {product.product_detail}
               </Typography>
               <Link>View</Link>
             </Grid>
@@ -79,9 +68,9 @@ export default function ItemBox({ product, productType }) {
             }}
           >
             <Typography color='red' variant='subtitle1' component='div'>
-              {product.productPrice} B/KG
+              {product.product_price} B/KG
             </Typography>
-            {state.some((obj) => obj.productID === product.productID) ? (
+            {state.some((obj) => obj.product_id === product.product_id) ? (
               <IconButton>
                 <CheckCircleRoundedIcon color={'success'} />
               </IconButton>

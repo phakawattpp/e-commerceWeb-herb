@@ -36,7 +36,7 @@ const Routing = () => {
     console.log('Cart', state);
     setTotal(
       state.reduce(
-        (n, { productPrice, quantity }) => n + productPrice * quantity,
+        (n, { product_price, quantity }) => n + product_price * quantity,
         0
       )
     );

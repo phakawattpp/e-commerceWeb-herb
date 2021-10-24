@@ -98,7 +98,7 @@ export default function Cart({ summary }) {
             state.map((element, index) => (
               <CustomCard key={index}>
                 <Box sx={{ display: 'flex', flexDirection: 'row' }}>
-                  <img src={element.productImg} width='90' height='90' />
+                  <img src={element.product_img} width='90' height='90' />
                   <Box
                     sx={{
                       display: 'flex',
@@ -111,9 +111,9 @@ export default function Cart({ summary }) {
                     </Typography>
 
                     {/* <Typography variant='body1'>{id}</Typography> */}
-                    <Typography variant='h5'>{element.productName}</Typography>
+                    <Typography variant='h5'>{element.product_name}</Typography>
                     <Typography variant='body1'>
-                      {element.productDetail}
+                      {element.product_detail}
                     </Typography>
                   </Box>
                 </Box>
@@ -130,7 +130,7 @@ export default function Cart({ summary }) {
                     onChange={(e) => {
                       let newCart = [...state];
                       const elementsIndex = newCart.findIndex(
-                        (element2) => element2.productID == element.productID
+                        (element2) => element2.product_id == element.product_id
                       );
                       newCart[elementsIndex] = {
                         ...newCart[elementsIndex],
@@ -154,7 +154,7 @@ export default function Cart({ summary }) {
                       },
                     }}
                     disabled
-                    value={element.productPrice * element.quantity}
+                    value={element.product_price * element.quantity}
                   />
                   <IconButton
                     sx={{ width: '32px', height: '32px' }}

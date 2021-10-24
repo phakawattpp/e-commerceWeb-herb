@@ -17,7 +17,7 @@ export const reducer = (state, action) => {
   // }
   if (action.type === 'REMOVE_ITEM') {
     const newCart = state.filter(
-      (element) => element.productID !== action.payload.productID
+      (element) => element.product_id !== action.payload.product_id
     );
     return newCart;
   }

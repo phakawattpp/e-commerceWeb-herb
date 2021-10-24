@@ -7,7 +7,8 @@ import { makeStyles } from '@mui/styles';
 import img1 from '../icon/Item1.svg';
 import img2 from '../icon/Item2.svg';
 import img3 from '../icon/Item3.svg';
-
+import { useFetch } from '../custom/useFetch';
+import '../styles.css';
 const useStyles = makeStyles({
   alignSub: {
     textAlign: 'center',
@@ -49,15 +50,10 @@ const AllProductsItems = [
   },
 ];
 
-export default function AllProducts({
-  type,
-  cart,
-  setCart,
-  totalPrice,
-  setTotalPrice,
-}) {
+export default function AllProducts({ type }) {
   const classes = useStyles();
-
+  const { loading, products } = useFetch('/getAllProducts');
+  console.log(products);
   return (
     <Box sx={{ width: '100%' }}>
       <Box
@@ -77,7 +73,7 @@ export default function AllProducts({
           className={classes.alignSub}
         >
           &nbsp;
-          {AllProductsItems.length}
+          {loading ? '0' : products.length}
           &nbsp;
         </Typography>
         <Typography variant='subtitle1' className={classes.alignSub}>
@@ -88,21 +84,19 @@ export default function AllProducts({
         </Typography>
       </Box>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
-        {AllProductsItems.map((el, index) => {
-          return (
-            <Grid item key={index} xs={3}>
-              <ItemBox
-                productType={type}
-                product={el}
-                addItem={setCart}
-                cartItems={cart}
-                totalPrice={totalPrice}
-                setTotalPrice={setTotalPrice}
-                key={index}
-              />
-            </Grid>
-          );
-        })}
+        {loading ? (
+          <div className='loaderBG'>
+            <div className='loader' />
+          </div>
+        ) : (
+          products.map((el, index) => {
+            return (
+              <Grid item key={index} xs={3}>
+                <ItemBox productType={type} product={el} key={index} />
+              </Grid>
+            );
+          })
+        )}
       </Grid>
     </Box>
   );
