@@ -6,21 +6,23 @@ pipeline {
         }
     }
     stages {
-        stage("build") {
+        stage("init") {
             steps {
-                echo 'building the application ...'
+                echo 'initializing the application ...'
                 sh 'npm install'
             }
         }
-        stage("test") {
+        stage("build") {
             steps {
-                            echo 'testing the application ...'
+                            echo 'building the application ...'
+                            sh 'npm build'
 
             }
         }
         stage("deploy") {
             steps {
                             echo 'deploying the application ...'
+                            sh 'npm start'
 
             }
         }
